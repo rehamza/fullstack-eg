@@ -1,0 +1,24 @@
+{
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "warn", // Change to 'error' if you want to enforce this rule strictly
+      {
+        "argsIgnorePattern": "^_", // Ignore variables starting with an underscore
+        "caughtErrors": "none"
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": [
+      "warn", // Change to 'error' if you want to enforce this rule strictly
+      {
+        "ignoreRestArgs": true // Allow 'any' for rest parameters if needed
+      }
+    ],
+    "react-hooks/exhaustive-deps": [
+      "warn", // Change to 'error' if you want to enforce this rule strictly
+      {
+        "additionalDependencies": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+version: "3"
+services:
+  backend:
+    build:
+      context: ./backend
+      target: development
+      dockerfile: Dockerfile
+    command: npm run start:dev
+    env_file:
+      - ./backend/.env.docker
+    depends_on:
+      - mongodb-primary
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    restart: always
+    env_file:
+      - ./frontend/.env.sample
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  mongodb-primary:
+    image: docker.io/bitnami/mongodb:5.0
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-primary
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ROOT_PASSWORD=password123
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+    volumes:
+      - "mongodb_master_data:/bitnami/mongodb"
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongodb_master_data:
+    driver: local
